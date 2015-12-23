@@ -1,0 +1,41 @@
+class Data
+
+# url : String[]
+# sub : String[]
+# chbox : String[]
+# save : String
+# path : String
+# tab : int
+
++ setURL(url : String[]) : void
++ getURL() : String[]
++ setSub(sub : String[]) : void
++ getSub() : String[]
++ setChbox(chbox : String[]) : void
++ getChbox() : String[]
++ setSave(save : String) : void
++ getSave() : String
++ setPath(path : String) : void
++ getPath() : String
++ setTab(tab: int) : void
++ getTab() : int
+
+
+
+class Savedata extends Data
+
++ Savedata()
++ savekeyFile() : void
+
+
+
+class Getdata extends Data
+
++ Getdata()
++ readkeyFile() : void
++ setURL1(url : String, sub : String) : void
++ setURL2(url : String, sub : String) : void
++ readurlFile(url : String[], sub : String) : void
++ comparison() : void
++ download() : void
++ saveurlFile() : void
