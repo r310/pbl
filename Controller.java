@@ -93,8 +93,8 @@ public class Controller {
 
 					while((line = br.readLine()) != null) {
 						if(comparison(line, fileurl)) {	//既に保存されたurlと比較
-							getdata.download(line, )	//まだ保存されていない場合、downloadを呼び出す
-							getdata.saveurlFile(line, dirSub)			//まだ保存されていない場合、saveurlFileを呼び出す
+							getdata.download(line, "a");	//まだ保存されていない場合、downloadを呼び出す
+							getdata.saveurlFile(line, dirSub);			//まだ保存されていない場合、saveurlFileを呼び出す
 						}
 					}
 
