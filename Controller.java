@@ -71,10 +71,11 @@ public class Controller {
 					break;
 			}
 
-			File dirFile = new File(getdata.getPath() + "file\\" + getdata.getSave() + "\\" + su[i] + "\\");	//教科名のディレクトリを指定
+			String dirSub = getdata.getPath() + "file\\" + getdata.getSave() + "\\" + su[i] + "\\";		//教科名のディレクトリを代入
+			File dirFile = new File(dirSub);	//教科名のディレクトリを指定
 			if(dirFile.exists()) {	//教科名のディレクトリが存在する場合
 				try {
-					File re = new File(getdata.getPath() + "file\\" + getdata.getSave() + "\\" + su[i] + "\\readurlFile.txt");	//読み込むファイル名を指定
+					File re = new File(dirSub + "readurlFile.txt");	//読み込むファイル名を指定
 					BufferedReader br = new BufferedReader(new FileReader(re));
 					String line;
 					int filecount = 0;
@@ -92,7 +93,7 @@ public class Controller {
 
 					while((line = br.readLine()) != null) {
 						if(comparison(line, fileurl)) {	//既に保存されたurlと比較
-							getdata.download(line)				//まだ保存されていない場合、downloadを呼び出す
+							getdata.download(line, , dirSub)	//まだ保存されていない場合、downloadを呼び出す
 							getdata.saveurlFile(line)			//まだ保存されていない場合、saveurlFileを呼び出す
 						}
 					}

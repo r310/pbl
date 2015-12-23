@@ -26,7 +26,7 @@ public class Getdata extends Data{
 				chbox[i] = br.readLine();	//方式を読み込み、代入
 			}
 
-			br.close();		//ファイルを閉じる
+			br.close();	//ファイルを閉じる
 
 		} catch(IOException e) {
 			System.out.println(e);		//例外が発生した場合に表示
@@ -137,32 +137,7 @@ public class Getdata extends Data{
 				String websource = url + match.group();
 
 				pw.println(websource);
-/*
-				try {
-					URL ur = new URL(websource);
-					URLConnection conn = ur.openConnection();
-					InputStream in = conn.getInputStream();
 
-					String dir = "/home/st12d28/pbl/" + sub + "/";
-					File newdir = new File(dir);
-					newdir.mkdir();
-
-					String filename = dir + match.group();
-					File file = new File(filename);
-					FileOutputStream out = new FileOutputStream(file, false);
-
-					int b;
-					while((b = in.read()) != -1) {
-						out.write(b);
-					}
-
-					out.close();
-					in.close();
-
-				} catch(IOException e) {
-					System.out.println(e);
-				}
-*/
 			}
 
 			pw.close();
