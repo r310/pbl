@@ -10,7 +10,7 @@ public class Savedata extends Data{
 	//keyfileに保存するメソッド
 	public void savekeyFile() {
 		try {
-			File fi = new File(path + "file\\keyFile.txt");		//書き込むファイル名を設定
+			File fi = new File(path + "file\\keyFile.txt");		//書き込むファイル名を指定
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fi)));
 
 			pw.println(tab);		//タブの数を書き込む
@@ -18,9 +18,9 @@ public class Savedata extends Data{
 
 			//タブの数だけ繰り返す
 			for(int i = 0; i < tab; i++) {
-			  pw.println();					//空白の行を書き込む
-				pw.println(url[i]);		//urlを書き込む
-				pw.println(sub[i]);		//教科名を書き込む
+				pw.println();	//空白の行を書き込む
+				pw.println(url[i]);	//urlを書き込む
+				pw.println(sub[i]);	//教科名を書き込む
 				pw.println(chbox[i]);	//方式を書き込む
 			}
 
