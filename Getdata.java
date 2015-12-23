@@ -97,13 +97,13 @@ public class Getdata extends Data{
 			return judge;	//結果を渡す
 	}
 
-	public void download(String fileurl, String filename, String dir) {
+	public void download(String fileurl, String filename) {
 		try {
 			URL ur = new URL(fileurl);	//保存するファイルのurlを指定
 			URLConnection conn = ur.openConnection();	//指定したurlに接続
 			InputStream in = conn.getInputStream();	//ストリームを生成
 
-			File fi = new File(dir + filename);	//保存先を指定
+			File fi = new File(getdata.getSave() + filename);	//保存先を指定
 			fi.mkdir();	//保存先を生成
 
 			FileOutputStream out = new FileOutputStream(fi, false);
@@ -121,8 +121,17 @@ public class Getdata extends Data{
 		}
 	}
 
-	public void saveurlFile() {
+	public void saveurlFile(String fileurl, String dir) {
+		try {
+			File fi = new File(dir + "readurlFile.txt");	//読み込むファイル名を設定
+			FileWriter fw = new FileWriter(file, true);
 
+			fw.write(fileurl);	//保存したファイルのurlを書き込む
+			fw.close();
+
+		} catch(IOException e) {
+			System.out.println(e);	//例外が発生した場合に表示
+		}
 	}
 
 	public void check(Pattern pa, String target, String url, String sub) {
