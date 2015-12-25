@@ -16,11 +16,12 @@ class View implements ActionListener{
 	private	JPanel[] URLPanel,subPanel,metPanel,MainPanel;
 	private JTextField saveText;
 	private JTextField[] URLText,subText;
-	private JButton help,apply,start;
+	private JButton help,apply,start,plus;
 	private JTabbedPane tab;
 	private JTextArea helpText;
 	private File file;
 	private FileReader filereader;
+	private int tabcount;
 
 	public void setSaveText(String save) {
 		saveText.setText(save);
@@ -57,14 +58,19 @@ class View implements ActionListener{
 
 	public View(){
 		//MainFrameの作成
-		frame = new JFrame("View Sample");
-		frame.setBounds(100, 100, 600, 300);
+		frame = new JFrame("PBL");
+		frame.setSize(600, 300);
+//		frame.setBounds(100, 100, 600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//HelpFrameの作成
-		helpf= new JFrame("help page");
-		helpf.setBounds(300, 300, 600, 600);
+		helpf= new JFrame("Help");
+		helpf.setSize(600, 600);
+//		helpf.setBounds(300, 300, 600, 600);
 		helpText = new JTextArea();
+
+		Container cont = frame.getContentPane();
+		cont.setLayout(null);
 
 		try{
 			file = new File("");
@@ -126,11 +132,14 @@ class View implements ActionListener{
 		help   = new JButton("ヘルプ");
 		apply  = new JButton("適用");
 		start  = new JButton("スタート");
+		plus = new JButton("+");
+		plus.setFont(new Font("メイリオ", Font.PLAIN, 10));
 
 		//アクションを設定
 		help.addActionListener(this);
 		apply.addActionListener(this);
 		start.addActionListener(this);
+		plus.addActionListener(this);
 
 		//各パーツをパネル化する
 		savePanel = new JPanel();
@@ -139,6 +148,7 @@ class View implements ActionListener{
 		savePanel.add(apply);
 		savePanel.add(start);
 		savePanel.add(help);
+		savePanel.add(plus);
 		URLPanel  = new JPanel[10];
 		subPanel  = new JPanel[10];
 		metPanel  = new JPanel[10];
@@ -176,22 +186,49 @@ class View implements ActionListener{
 			MainPanel[i].add(metPanel[i]);
 		}
 
+
 		//TabにMainPanelをくっつける
-		for(int i=0;i<10;i++){
-			tab.addTab(null/*"教科"+ (i+1)*/,MainPanel[i]);
-		}
+	//	for(int i=0;i<10;i++){
+	//		tab.addTab(null/*"教科"+ (i+1)*/,MainPanel[i]);
+	//	}
+
+		tab.addTab(null,MainPanel[0]);
+		tabcount = 1;
 
 		//Frameに配置
-		frame.setLayout(new BorderLayout());
+//		frame.setLayout(new BorderLayout());
 		//Tabを配置
-		frame.add(tab,BorderLayout.CENTER);
+//		frame.add(tab,BorderLayout.CENTER);
 		//SavePanelを配置
-		frame.add(savePanel,BorderLayout.SOUTH);
+//		frame.add(savePanel,BorderLayout.SOUTH);
 
 		//HelpPageの作成
-		helpf.add(helpText,BorderLayout.CENTER);
+//		helpf.add(helpText,BorderLayout.CENTER);
+
+		JPanel color = new JPanel();
+		color.setBackground(new Color(238, 238, 238));
+
+		cont.add(help);
+		cont.add(plus);
+		cont.add(color);
+		cont.add(tab);
+		cont.add(start);
+		cont.add(apply);
+		cont.add(savePanel);
+		help.setBounds(520, 0, 75, 22);
+		plus.setBounds(480, 0, 45, 22);
+		tab.setBounds(0, 0, 480, 200);
+		color.setBounds(475, 22, 500, 200);
+		apply.setBounds(480, 225, 75, 20);
+		savePanel.setBounds(30, 220, 500, 30);
+
+		tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+		//中央に表示
+    frame.setLocationRelativeTo(null);
 		//可視性を与える
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 
 	public void actionPerformed(ActionEvent e){
@@ -203,6 +240,10 @@ class View implements ActionListener{
 		ur = new String[10];
 		su = new String[10];
 		ch = new String[10];
+
+		if(e.getSource() == plus) {
+			tab.addTab(null,MainPanel[tabcount++]);
+		}
 
 		//適用ボタンが押された場合
 		if(e.getSource() == apply){
