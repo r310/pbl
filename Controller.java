@@ -5,39 +5,68 @@ public class Controller {
 	private Getdata getdata;
 	private View view;
 
-	//savedata‚É’l‚ğ“n‚·ƒƒ\ƒbƒh
+	//viewã«å€¤ã‚’æ¸¡ã™ãƒ¡ã‚½ãƒƒãƒ‰
+	public void initialInfo() {
+		getdata.readkeyFile();	//readkeyFileã«æ›¸ã‹ã‚Œã¦ã„ã‚‹æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
+
+		String[] ur, su, ch;
+		String sa;
+		int ta;
+
+		ta = getdata.getTab();		//èª­ã¿è¾¼ã‚“ã ã‚¿ãƒ–ã®æ•°ã‚’ä»£å…¥
+		sa = getdata.getSave();		//èª­ã¿è¾¼ã‚“ã ä¿å­˜å…ˆã‚’ä»£å…¥
+
+		ur = new String[10];
+		su = new String[10];
+		ch = new String[10];
+
+		ur = getdata.getURL();		//èª­ã¿è¾¼ã‚“ã URLã‚’ä»£å…¥
+		su = getdata.getSub();		//èª­ã¿è¾¼ã‚“ã æ•™ç§‘åã‚’ä»£å…¥
+		ch = getdata.getChbox();	//èª­ã¿è¾¼ã‚“ã æ–¹å¼ã‚’ä»£å…¥
+
+		for(int i = 0; i < ta; i++) {
+			view.setURLText(ur[i], i);
+			view.setSubText(su[i], i);
+			view.setRadioButton(ch[i], i);
+		}
+
+		view.setSaveText(sa);
+		view.setTabTitle();
+	}
+
+	//savedataã«å€¤ã‚’æ¸¡ã™ãƒ¡ã‚½ãƒƒãƒ‰
 	public void addSave(String[] url, String[] sub, String[] chbox, String save, int tab) {
 		String[] ur, su, ch;
 		String sa;
 		int ta;
 
-		ta = tab;		//ƒ^ƒu‚Ì”‚ğ‘ã“ü
-		sa = save;	//•Û‘¶æ‚ğ‘ã“ü
+		ta = tab;		//ã‚¿ãƒ–ã®æ•°ã‚’ä»£å…¥
+		sa = save;	//ä¿å­˜å…ˆã‚’ä»£å…¥
 		ur = new String[ta];
 		su = new String[ta];
 		ch = new String[ta];
 
-		//ƒ^ƒu‚Ì”‚¾‚¯‘ã“ü
+		//ã‚¿ãƒ–ã®æ•°ã ã‘ä»£å…¥
 		for(int i = 0; i < ta; i++) {
-			ur[i] = url[i];		//url‚ğ‘ã“ü
-			su[i] = sub[i];		//‹³‰È–¼‚ğ‘ã“ü
-			ch[i] = chbox[i];	//•û®‚ğ‘ã“ü
+			ur[i] = url[i];		//urlã‚’ä»£å…¥
+			su[i] = sub[i];		//æ•™ç§‘åã‚’ä»£å…¥
+			ch[i] = chbox[i];	//æ–¹å¼ã‚’ä»£å…¥
 		}
 
-		//savedata‚Éurl,‹³‰È–¼,•û®,•Û‘¶æ,ƒ^ƒu‚Ì”‚Ì’l‚ğ“n‚·
+		//savedataã«url,æ•™ç§‘å,æ–¹å¼,ä¿å­˜å…ˆ,ã‚¿ãƒ–ã®æ•°ã®å€¤ã‚’æ¸¡ã™
 		savedata.setURL(ur);
 		savedata.setSub(su);
 		savedata.setChbox(ch);
 		savedata.setSave(save);
 		savedata.setTab(tab);
 
-		//keyfile‚É‘‚«‚Şƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+		//keyfileã«æ›¸ãè¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 		savedata.savekeyFile();
 	}
 
-	//keyfile‚ğ“Ç‚İ‚İAö‹Æ‘—¿‚ğ•Û‘¶‚·‚éƒƒ\ƒbƒh
+	//keyfileã‚’èª­ã¿è¾¼ã¿ã€æˆæ¥­è³‡æ–™ã‚’ä¿å­˜ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 	public void addGet() {
-		//keyfile‚ğ“Ç‚İ‚Şƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+		//keyfileã‚’èª­ã¿è¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 		getdata.readkeyFile();
 
 		String[] ur, su, ch, fileURL;
@@ -45,25 +74,26 @@ public class Controller {
 		su = new String[10];
 		ch = new String[10];
 
-		ur = getdata.getURL();		//keyfile‚©‚ç“Ç‚İ‚ñ‚¾url‚Ì’l‚ğ‘ã“ü
-		su = getdata.getSub();		//keyfile‚©‚ç“Ç‚İ‚ñ‚¾sub‚Ì’l‚ğ‘ã“ü
-		ch = getdata.getChbox();	//keyfile‚©‚ç“Ç‚İ‚ñ‚¾ch‚Ì’l‚ğ‘ã“ü
+		ur = getdata.getURL();		//keyfileã‹ã‚‰èª­ã¿è¾¼ã‚“ã urlã®å€¤ã‚’ä»£å…¥
+		su = getdata.getSub();		//keyfileã‹ã‚‰èª­ã¿è¾¼ã‚“ã subã®å€¤ã‚’ä»£å…¥
+		ch = getdata.getChbox();	//keyfileã‹ã‚‰èª­ã¿è¾¼ã‚“ã chã®å€¤ã‚’ä»£å…¥
 
-		String dirSave = getdata.getPath() + getdata.getSave();		//•Û‘¶æ‚ÌƒfƒBƒŒƒNƒgƒŠ–¼‚ğ‘ã“ü
+		String dirSave = getdata.getSave();		//ä¿å­˜å…ˆã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’ä»£å…¥
 		File save = new File(dirSave);
-		if(!save.exists()) {	//•Û‘¶æ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚µ‚È‚¢ê‡
-			save.mkdirs();			//ƒfƒBƒŒƒNƒgƒŠ‚ğ¶¬
+		if(!save.exists()) {	//ä¿å­˜å…ˆã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ãªã„å ´åˆ
+			save.mkdirs();			//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç”Ÿæˆ
 		}
 
-		//ƒ^ƒu‚Ì”‚¾‚¯ŒJ‚è•Ô‚·
+		//ã‚¿ãƒ–ã®æ•°ã ã‘ç¹°ã‚Šè¿”ã™
 		for(int i = 0; i < getdata.getTab(); i++) {
-			//•û®‚É‚æ‚Á‚ÄŒÄ‚Ño‚·ƒƒ\ƒbƒh‚ğŒˆ‚ß‚é
+			//æ–¹å¼ã«ã‚ˆã£ã¦å‘¼ã³å‡ºã™ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æ±ºã‚ã‚‹
 			switch(ch[i]) {
 				case "Other":
 					getdata.setURL1(ur[i]);
 					break;
 
 				case "Google Drive" :
+					System.out.println("setURL2");
 					getdata.setURL2(ur[i]);
 					break;
 
@@ -71,40 +101,62 @@ public class Controller {
 					break;
 			}
 
-			String dirSub = getdata.getPath() + "file\\" + getdata.getSave() + "\\" + su[i] + "\\";		//‹³‰È–¼‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğ‘ã“ü
-			File dirFile = new File(dirSub);	//‹³‰È–¼‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğw’è
-			if(dirFile.exists()) {	//‹³‰È–¼‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚·‚éê‡
+			String dirSub = getdata.getSave() + su[i] + "/";		//æ•™ç§‘åã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä»£å…¥
+			System.out.println(dirSub);
+			File dirFile = new File(dirSub);	//æ•™ç§‘åã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’æŒ‡å®š
+
+			if(dirFile.exists()) {	//æ•™ç§‘åã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã™ã‚‹å ´åˆ
 				try {
-					File re = new File(dirSub + "readurlFile.txt");	//“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼‚ğw’è
+					System.out.println("å­˜åœ¨ã™ã‚‹");
+					File re = new File(dirSub + "readurlFile.txt");	//èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®š
 					BufferedReader br = new BufferedReader(new FileReader(re));
 					String line;
 					int filecount = 0;
 
-					//‘‚«‚Ü‚ê‚Ä‚¢‚éurl‚Ì”‚ğ’²‚×‚é
+					//æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹urlã®æ•°ã‚’èª¿ã¹ã‚‹
 					while((line = br.readLine()) != null) {
 						filecount++;
 					}
 
-					String[] fileurl = new String[filecount];	//‘‚«‚Ü‚ê‚Ä‚¢‚éurl‚Ì”‚¾‚¯‚Ì”z—ñ‚ğéŒ¾
-					getdata.readurlFile(fileurl, su[i]);			//readurlFile‚ğŒÄ‚Ño‚·
+					String[] fileurl = new String[filecount];	//æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹urlã®æ•°ã ã‘ã®é…åˆ—ã‚’å®£è¨€
+					getdata.readurlFile(fileurl, su[i]);		//readurlFileã‚’å‘¼ã³å‡ºã™
 
-					re = new File(getdata.getPath() + "file\\websource.txt");	//“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼‚ğw’è
+					re = new File(getdata.getPath() + "file/websource.txt");	//èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®š
 					br = new BufferedReader(new FileReader(re));
 
 					while((line = br.readLine()) != null) {
-						if(comparison(line, fileurl)) {	//Šù‚É•Û‘¶‚³‚ê‚½url‚Æ”äŠr
-							getdata.download(line, "a");	//‚Ü‚¾•Û‘¶‚³‚ê‚Ä‚¢‚È‚¢ê‡Adownload‚ğŒÄ‚Ño‚·
-							getdata.saveurlFile(line, dirSub);			//‚Ü‚¾•Û‘¶‚³‚ê‚Ä‚¢‚È‚¢ê‡AsaveurlFile‚ğŒÄ‚Ño‚·
+						if(getdata.comparison(line, fileurl)) {	//æ—¢ã«ä¿å­˜ã•ã‚ŒãŸurlã¨æ¯”è¼ƒ
+							getdata.download(line, su[i]);	//ã¾ã ä¿å­˜ã•ã‚Œã¦ã„ãªã„å ´åˆã€downloadã‚’å‘¼ã³å‡ºã™
+							getdata.saveurlFile(line, su[i]);			//ã¾ã ä¿å­˜ã•ã‚Œã¦ã„ãªã„å ´åˆã€saveurlFileã‚’å‘¼ã³å‡ºã™
 						}
 					}
 
 				} catch(IOException e) {
-					System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
+					System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
 				}
-			} else {	//ƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚µ‚È‚¢ê‡
-				dirFile.mkdir();		//ƒfƒBƒŒƒNƒgƒŠ‚ğ¶¬
 
+			} else {	//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ãªã„å ´åˆ
+				dirFile.mkdir();		//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç”Ÿæˆ
+				System.out.println("å­˜åœ¨ã—ãªã„");
+
+				try {
+					File re = new File(getdata.getPath() + "file/websource.txt");
+					BufferedReader br = new BufferedReader(new FileReader(re));
+					String line;
+
+					while((line = br.readLine()) != null) {
+						getdata.download(line, su[i]);	//èª­ã¿è¾¼ã‚“ã urlå…ˆã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
+						getdata.saveurlFile(line, su[i]);	//ä¿å­˜ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æ›¸ãè¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
+					}
+
+					br.close();
+
+				} catch(IOException e) {
+					System.out.println(e);
+				}
 			}
+
+			getdata.clearMap();
 		}
 	}
 

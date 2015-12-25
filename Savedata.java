@@ -9,7 +9,7 @@ public class Savedata extends Data{
 
 	public void savekeyFile() {
 		try {
-			File fi = new File(path + "file\\keyFile.txt");
+			File fi = new File(path + "file/keyFile.txt");
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fi)));
 
 			pw.println(tab);

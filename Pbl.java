@@ -4,11 +4,12 @@ public class Pbl {
 		Getdata getdata = new Getdata();
 		Savedata savedata = new Savedata();
 		Controller controller = new Controller();
-		
+
 		view.setController(controller);
-		
+
 		controller.setView(view);
 		controller.setGetdata(getdata);
 		controller.setSavedata(savedata);
+		controller.initialInfo();
 	}
 }

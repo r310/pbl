@@ -1,181 +1,231 @@
 import java.io.*;
 import java.net.*;
 import java.util.regex.*;
+import java.util.HashMap;
 
 public class Getdata extends Data{
+	HashMap<String, String> map = new HashMap<String, String>();
+
 	public Getdata() {
 		url = new String[10];
 		sub = new String[10];
 		chbox = new String[10];
 	}
 
-	//keyfile‚ğ“Ç‚İ‚Şƒƒ\ƒbƒh
+	//ãƒãƒƒãƒ—ã‹ã‚‰ã™ã¹ã¦å‰Šé™¤ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+	public void clearMap() {
+		map.clear();
+	}
+
+	//keyfileã‚’èª­ã¿è¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰
 	public void readkeyFile() {
 		try {
-			File fi = new File(path + "\\file\\keyfile.txt");		//“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼‚ğİ’è
+			File fi = new File(path + "file/keyFile.txt");		//èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨­å®š
 			BufferedReader br = new BufferedReader(new FileReader(fi));
 
-			tab = Integer.valueOf(br.readLine()).intValue();	//ƒ^ƒu‚Ì”‚ğ“Ç‚İ‚İA‘ã“ü
-			save = br.readLine();		//•Û‘¶æ‚ğ“Ç‚İ‚İA‘ã“ü
+			tab = Integer.valueOf(br.readLine()).intValue();	//ã‚¿ãƒ–ã®æ•°ã‚’èª­ã¿è¾¼ã¿ã€ä»£å…¥
+			save = br.readLine();		//ä¿å­˜å…ˆã‚’èª­ã¿è¾¼ã¿ã€ä»£å…¥
 
-			//ƒ^ƒu‚Ì”‚¾‚¯ŒJ‚è•Ô‚·
+			//ã‚¿ãƒ–ã®æ•°ã ã‘ç¹°ã‚Šè¿”ã™
 			for(int i = 0; i < tab; i++) {
-				br.readLine();						//‹ó”’‚Ìs‚ğ“Ç‚İ‚Ş
-				url[i] = br.readLine();		//url‚ğ“Ç‚İ‚İA‘ã“ü
-				sub[i] = br.readLine();		//‹³‰È–¼‚ğ“Ç‚İ‚İA‘ã“ü
-				chbox[i] = br.readLine();	//•û®‚ğ“Ç‚İ‚İA‘ã“ü
+				br.readLine();				//ç©ºç™½ã®è¡Œã‚’èª­ã¿è¾¼ã‚€
+				url[i] = br.readLine();		//urlã‚’èª­ã¿è¾¼ã¿ã€ä»£å…¥
+				sub[i] = br.readLine();		//æ•™ç§‘åã‚’èª­ã¿è¾¼ã¿ã€ä»£å…¥
+				chbox[i] = br.readLine();	//æ–¹å¼ã‚’èª­ã¿è¾¼ã¿ã€ä»£å…¥
 			}
 
-			br.close();	//ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+			br.close();	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 
 		} catch(IOException e) {
-			System.out.println(e);		//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
+			System.out.println(e);		//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
 		}
 	}
 
-	//—£U”Šw‚Ìê‡‚Ég‚¤ƒƒ\ƒbƒh
+	//é›¢æ•£æ•°å­¦ã®å ´åˆã«ä½¿ã†ãƒ¡ã‚½ãƒƒãƒ‰
 	public void setURL1(String url) {
-		String regex = "(4Dmath-)\\d{1,2}(.pptx)";	//Œ©‚Â‚¯‚é•¶š—ñ‚ğw’è
-		Pattern pa = Pattern.compile(regex);				//ƒpƒ^[ƒ“ƒIƒuƒWƒFƒNƒg‚ğì¬
+		String regex = "(4Dmath-)\\d{1,2}(.pptx)";	//è¦‹ã¤ã‘ã‚‹æ–‡å­—åˆ—ã‚’æŒ‡å®š
+		Pattern pa = Pattern.compile(regex);				//ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
 
 		try {
-			String htm = getSourceText(new URL(url));	//urlæ‚Ìhtml‚Ìî•ñ‚ğí“—‚µA‘ã“ü
-			Matcher match = pa.matcher(htm);					//ƒ}ƒbƒ`ƒƒ‚ğì¬
+			String htm = getSourceText(new URL(url));	//urlå…ˆã®htmlã®æƒ…å ±ã‚’å–å¾—ã—ã€ä»£å…¥
+			Matcher match = pa.matcher(htm);					//ãƒãƒƒãƒãƒ£ã‚’ä½œæˆ
 
 			try {
-				File wr = new File(path + "file\\websource.txt");		//‘‚«‚Şƒtƒ@ƒCƒ‹‚ğw’è
-				PrintWriter pw = new PrintWriter(wr);
+				File wr = new File(path + "file/websource.txt");		//æ›¸ãè¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®š
+				PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(wr)));
 
-				//regex‚ªŒ©‚Â‚©‚é‚½‚Ñ‚É‘‚«‚Ş
+				//regexãŒè¦‹ã¤ã‹ã‚‹ãŸã³ã«æ›¸ãè¾¼ã‚€
 				while(match.find()) {
 					System.out.println(url + match.group());
-					System fileurl = url + match.group();		//Œ©‚Â‚©‚Á‚½•¶š—ñ‚ğ‘ã“ü
+					String fileurl = url + match.group();		//è¦‹ã¤ã‹ã£ãŸæ–‡å­—åˆ—ã‚’ä»£å…¥
+					map.put(fileurl, match.group());
 
-					pw.println(fileurl);	//ƒtƒ@ƒCƒ‹‚Ìurlæ‚ğ‘‚«‚Ş
+					pw.println(fileurl);	//ãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æ›¸ãè¾¼ã‚€
 				}
+
+				pw.close();
 
 			} catch(IOException e) {
-				System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
+				System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
 			}
 
 		} catch(IOException e) {
-			System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
+			System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
 		}
 	}
 
-	//ƒvƒƒOƒ‰ƒ€İŒv‚Ìê‡‚Ég‚¤ƒƒ\ƒbƒh
-	public void setURL2(String ur) {
+	//ãƒ—ãƒ­ã‚°ãƒ©ãƒ è¨­è¨ˆã®å ´åˆã«ä½¿ã†ãƒ¡ã‚½ãƒƒãƒ‰
+	public void setURL2(String url) {
+		String regex = "(https://drive.google.com.file.d.0B-wjPD8Rvpuc).{15}(.view.usp.u003ddrive_web)";	//è¦‹ã¤ã‘ã‚‹æ–‡å­—åˆ—ã‚’æŒ‡å®š
+		Pattern pa = Pattern.compile(regex);	//ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
 
-	}
-
-	//urlFile‚ğ“Ç‚İ‚Şƒƒ\ƒbƒh
-	public void readurlFile(String[] fileurl, String sub) {
 		try {
-			File re = new File(path + "file\\" + sub + "\\readurlFile.txt");	//“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼‚ğw’è
-			BufferedReader br = new BufferedReader(new FileReader(re));
-			int count = 0;
-			String line;
+			String htm = getSourceText(new URL(url));	//urlå…ˆã®htmlã®æƒ…å ±ã‚’å–å¾—ã—ã€ä»£å…¥
+			System.out.println(htm);
+			Matcher match = pa.matcher(htm);			//ãƒãƒƒãƒãƒ£ã‚’ä½œæˆ
 
-			while((line = br.readLine()) != null) {
-				fileurl[count++] = line;	//url‚ğˆês‚¸‚Â“Ç‚İ‚Ş
-			}
+			try {
+				File wr = new File(path + "file/websource.txt");	//æ›¸ãè¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®š
+				PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(wr)));
 
-		} catch(IOException e) {
-			System.out.println(e);		//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
-		}
-	}
+				//regexãŒè¦‹ã¤ã‹ã‚‹ãŸã³ã«æ›¸ãè¾¼ã‚€
+				while(match.find()) {
+					System.out.println(match.group());	//è¦‹ã¤ã‹ã£ãŸæ–‡å­—åˆ—ã‚’è¡¨ç¤º
+					pw.println(match.group());	//ãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æ›¸ãè¾¼ã‚€
+					String key = match.group();
+					String key2 = key.substring(45, 60);
 
-	public boolean comparison(String url1, String[] url2) {
-			boolean judge = true;
-			for(int i = 0; i < url2.length; i++) {
-				if(url1.equals(url2[i])) {	//Šù‚É•Û‘¶‚³‚ê‚Ä‚¢‚é‚©”äŠr
-					judge = false;
-					break;
+				//	System.out.println(key2);
+
+					String regex2 = "\\p{Punct}\\p{Digit}\\p{Punct}\\p{Digit}{2}\\p{Punct}.{3,15}?((.java)|(.pdf))\\p{Punct}{7}(0B-wjPD8Rvpuc)" + key2 + "\\p{Punct}";
+					Pattern pa2 = Pattern.compile(regex2);
+					Matcher match2 = pa2.matcher(htm);
+
+					System.out.println(key2);
+
+					while(match2.find()) {
+					//	System.out.println(match2.group());
+						String key3 = match2.group();
+						String regex3 = "\\p{Digit}\\p{Punct}\\p{Digit}{2}\\p{Punct}([0-9a-zA-Z]){3,15}((.java)|(.pdf))";
+						Pattern pa3 = Pattern.compile(regex3);
+						Matcher match3 = pa3.matcher(key3);
+
+						if(match3.find()) {
+							System.out.println(match3.group());
+						}
+
+						System.out.println("regex4");
+						String regex4 = "((.java)|(.pdf))\\p{Punct}{3}(https://lh)\\d.(googleusercontent.com/).{70}\\p{Punct}(,,,,)\\p{Punct}(0B-wjPD8Rvpuc)" + key3 + "\\p{Punct}";
+						Pattern pa4 = Pattern.compile(regex4);
+						Matcher match4 = pa4.matcher(htm);
+
+						while(match4.find()) {
+							System.out.println(match4.group());
+						}
+					}
+
+					System.out.println();
 				}
+
+				pw.close();
+
+			} catch(IOException e) {
+				System.out.println(e);
 			}
-
-			return judge;	//Œ‹‰Ê‚ğ“n‚·
-	}
-
-	public void download(String fileurl, String filename) {
-		try {
-			URL ur = new URL(fileurl);	//•Û‘¶‚·‚éƒtƒ@ƒCƒ‹‚Ìurl‚ğw’è
-			URLConnection conn = ur.openConnection();	//w’è‚µ‚½url‚ÉÚ‘±
-			InputStream in = conn.getInputStream();	//ƒXƒgƒŠ[ƒ€‚ğ¶¬
-
-			File fi = new File(getdata.getSave() + filename);	//•Û‘¶æ‚ğw’è
-			fi.mkdir();	//•Û‘¶æ‚ğ¶¬
-
-			FileOutputStream out = new FileOutputStream(fi, false);
-
-			int b;
-			while((b = in.read()) != -1) {
-				out.write(b);		//•Û‘¶
-			}
-
-			out.close();
-			in.close();
-
-		} catch(IOException e) {
-			System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
-		}
-	}
-
-	public void saveurlFile(String fileurl, String dir) {
-		try {
-			File fi = new File(dir + "readurlFile.txt");	//“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼‚ğİ’è
-			FileWriter fw = new FileWriter(file, true);
-
-			fw.write(fileurl);	//•Û‘¶‚µ‚½ƒtƒ@ƒCƒ‹‚Ìurl‚ğ‘‚«‚Ş
-			fw.close();
-
-		} catch(IOException e) {
-			System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
-		}
-	}
-
-	public void check(Pattern pa, String target, String url, String sub) {
-		Matcher match = pa.matcher(target);
-
-		try {
-			File wr = new File(path + "file\\websource.txt");
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(wr)));
-
-			while(match.find()) {
-				System.out.println(url + match.group());
-				String websource = url + match.group();
-
-				pw.println(websource);
-
-			}
-
-			pw.close();
 
 		} catch(IOException e) {
 			System.out.println(e);
 		}
 	}
 
-	//urlæ‚Ìhtml‚Ìî•ñ‚ğæ“¾‚·‚éƒƒ\ƒbƒh
-	public String getSourceText(URL url) throws IOException {
-		URLConnection conn = url.openConnection();	//urlæ‚ÉÚ‘±
-		StringBuilder sb = new StringBuilder();			//‰Â•Ï’·‚Ì•¶š—ñ‚ğéŒ¾
-
+	//urlFileã‚’èª­ã¿è¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰
+	public void readurlFile(String[] fileurl, String sub) {
 		try {
-			BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()));		//ˆês‚¸‚Â“Ç‚İ‚ŞƒXƒgƒŠ[ƒ€
+			File re = new File(path + sub + "/readurlFile.txt");	//èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®š
+			BufferedReader br = new BufferedReader(new FileReader(re));
+			int count = 0;
+			String line;
 
-			String source;
-			//ÅŒã‚Ü‚Å“Ç‚İ‚Ş
-			while((source = bf.readLine()) != null) {
-				sb.append(source);	//“Ç‚İ‚ñ‚¾•¶š—ñ‚ğ’Ç‰Á
+			while((line = br.readLine()) != null) {
+				fileurl[count++] = line;	//urlã‚’ä¸€è¡Œãšã¤èª­ã¿è¾¼ã‚€
 			}
 
-			bf.close();		//ƒXƒgƒŠ[ƒ€‚ğ•Â‚¶‚é
+		} catch(IOException e) {
+			System.out.println(e);		//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
+		}
+	}
+
+	//æ—¢ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã¨æ¯”è¼ƒã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+	public boolean comparison(String url1, String[] url2) {
+			boolean judge = true;
+			for(int i = 0; i < url2.length; i++) {
+				if(url1.equals(url2[i])) {	//æ—¢ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‹æ¯”è¼ƒ
+					judge = false;
+					break;
+				}
+			}
+
+			return judge;	//çµæœã‚’æ¸¡ã™
+	}
+
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+	public void download(String fileurl, String dirsub) {
+		try {
+			URL ur = new URL(fileurl);	//ä¿å­˜ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æŒ‡å®š
+			URLConnection conn = ur.openConnection();	//æŒ‡å®šã—ãŸurlã«æ¥ç¶š
+			InputStream in = conn.getInputStream();	//ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ç”Ÿæˆ
+			String filename = map.get(fileurl);		//fileurlã«å¯¾å¿œã™ã‚‹ãƒãƒƒãƒ—ã‚’ä»£å…¥
+			File fi = new File(this.save + dirsub + "/" + filename);	//ä¿å­˜å…ˆã‚’æŒ‡å®š
+			FileOutputStream out = new FileOutputStream(fi, false);
+
+			int b;
+			while((b = in.read()) != -1) {
+				out.write(b);		//ä¿å­˜
+			}
+
+			out.close();
+			in.close();
 
 		} catch(IOException e) {
-			System.out.println(e);	//—áŠO‚ª”­¶‚µ‚½ê‡‚É•\¦
+			System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
+		}
+	}
+
+	//ä¿å­˜ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æ›¸ãè¾¼ã‚€ãƒ¡ã‚½ãƒƒãƒ‰
+	public void saveurlFile(String fileurl, String dirsub) {
+		try {
+			File fi = new File(this.save + dirsub + "/readurlFile.txt");	//æ›¸ãè¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨­å®š
+			FileWriter fw = new FileWriter(fi, true);
+
+			fw.write(fileurl + "\n");	//ä¿å­˜ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®urlã‚’æ›¸ãè¾¼ã‚€
+			fw.close();
+
+		} catch(IOException e) {
+			System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
+		}
+	}
+
+	//urlå…ˆã®htmlã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+	public String getSourceText(URL url) throws IOException {
+		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("po.cc.ibaraki-ct.ac.jp", 3128));
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection(proxy);	//urlå…ˆã«æ¥ç¶š
+		StringBuilder sb = new StringBuilder();			//å¯å¤‰é•·ã®æ–‡å­—åˆ—ã‚’å®£è¨€
+
+		try {
+			BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()));		//ä¸€è¡Œãšã¤èª­ã¿è¾¼ã‚€ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+
+			String source;
+			//æœ€å¾Œã¾ã§èª­ã¿è¾¼ã‚€
+			while((source = bf.readLine()) != null) {
+				sb.append(source);	//èª­ã¿è¾¼ã‚“ã æ–‡å­—åˆ—ã‚’è¿½åŠ 
+			}
+
+			bf.close();		//ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’é–‰ã˜ã‚‹
+
+		} catch(IOException e) {
+			System.out.println(e);	//ä¾‹å¤–ãŒç™ºç”Ÿã—ãŸå ´åˆã«è¡¨ç¤º
 		}
 
-		return sb.toString();	//urlæ‚Ìhtml‚Ìî•ñ‚ğ“n‚·
+		return sb.toString();	//urlå…ˆã®htmlã®æƒ…å ±ã‚’æ¸¡ã™
 	}
 }

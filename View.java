@@ -1,189 +1,238 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
-public class View implements ActionListener {
+class View implements ActionListener{
+//GUIの作成
 	private Controller controller;
-	private JFrame frame;
-	private JPanel[] panel;
-	private JLabel[] label;
-	private JButton[] button;
-	private JTextField[] text;
-	private JRadioButton[] radio;
+
+	private JFrame frame,helpf;
+	private JLabel save;
+	private JLabel[] URL,subject,method,savepoint;
+	private JRadioButton[] drive,other;
 	private ButtonGroup[] group;
+	private JPanel savePanel;
+	private	JPanel[] URLPanel,subPanel,metPanel,MainPanel;
+	private JTextField saveText;
+	private JTextField[] URLText,subText;
+	private JButton help,apply,start;
 	private JTabbedPane tab;
-	private JTextField save;
-	private int[] tabUsed;
+	private JTextArea helpText;
+	private File file;
+	private FileReader filereader;
 
-	public View() {
-		tabUsed = new int[10];
+	public void setSaveText(String save) {
+		saveText.setText(save);
+	}
+
+	public void setURLText(String url, int i) {
+		URLText[i].setText(url);
+	}
+
+	public void setSubText(String sub, int i) {
+		subText[i].setText(sub);
+	}
+
+	public void setRadioButton(String chb, int i) {
+		System.out.println(chb);
+		if(chb == "Google Drive") {
+			drive[i].setSelected(true);
+		}
+
+		else if(chb == "Other") {
+			other[i].setSelected(true);
+		}
+	}
+
+	public void setTabTitle() {
 		for(int i = 0; i < 10; i++) {
-			tabUsed[i] = -1;
+			tab.setTitleAt(i, subText[i].getText());
 		}
 
-		text = new JTextField[30];
-		for(int i = 0; i < 30; i++) {
-			text[i] = new JTextField("", 15);
-		}
+		//	for(int i = 0; i < 10; i++) {
+		//		tab.setTitleAt(i,subText[i].getText());
+		//	}
+	}
 
-		radio = new JRadioButton[20];
-		for(int i = 0; i < 10; i++) {
-			radio[i] = new JRadioButton("Googld Drive");
-		}
-
-		for(int i = 10; i < 20; i++) {
-			radio[i] = new JRadioButton("Other");
-		}
-
-		group = new ButtonGroup[10];
-		for(int i = 0; i < 10; i++) {
-			group[i] = new ButtonGroup();
-			group[i].add(radio[i]);
-			group[i].add(radio[i + 10]);
-		}
-
-		label = new JLabel[30];
-		for(int i = 0; i < 10; i++) {
-			label[i] = new JLabel("URL");
-		}
-
-		for(int i = 10; i < 20; i++) {
-			label[i] = new JLabel("���Ȗ�");
-		}
-
-		for(int i = 20; i < 30; i++) {
-			label[i] = new JLabel("����");
-		}
-
-		button = new JButton[5];
-		button[0] = new JButton("�w���v");
-		button[1] = new JButton("�K�p");
-		button[2] = new JButton("�^�u���폜");
-		button[3] = new JButton("�X�^�[�g");
-		button[4] = new JButton("+");
-
-		button[0].addActionListener(this);
-		button[1].addActionListener(this);
-		button[2].addActionListener(this);
-		button[3].addActionListener(this);
-		button[4].addActionListener(this);
-
-		panel = new JPanel[40];
-		for(int i = 0; i < 10; i++) {
-			panel[i] = new JPanel();
-			panel[i].add(label[i]);
-			panel[i].add(text[i]);
-		}
-
-		for(int i = 10; i < 20; i++) {
-			panel[i] = new JPanel();
-			panel[i].add(label[i]);
-			panel[i].add(text[i]);
-		}
-
-		for(int i = 20; i < 30; i++) {
-			panel[i] = new JPanel();
-			panel[i].add(label[i]);
-			panel[i].add(radio[i - 20]);
-			panel[i].add(radio[i - 10]);
-		}
-
-		for(int i = 30; i < 40; i++) {
-			panel[i] = new JPanel();
-			panel[i].add(panel[i - 30]);
-			panel[i].add(panel[i - 20]);
-			panel[i].add(panel[i - 10]);
-		}
-
-		tab = new JTabbedPane();
-		tab.addTab("tab" + tab.getTabCount(), panel[tab.getTabCount() + 30]);
-		tab.setPreferredSize(new Dimension(250, 180));
-		tabUsed[0] = tab.getTabCount() - 1;
-
-		JPanel MainPanel = new JPanel();
-		MainPanel.add(tab);
-		MainPanel.add(button[1]);
-		MainPanel.add(button[2]);
-		MainPanel.add(button[3]);
-		MainPanel.add(button[4]);
-
-		JLabel l = new JLabel("�ۑ���");
-		save = new JTextField("", 15);
-
-		MainPanel.add(l);
-		MainPanel.add(save);
-
-		frame = new JFrame("title");
-		frame.add(MainPanel);
-		frame.setBounds(100, 100, 280, 270);
+	public View(){
+		//MainFrameの作成
+		frame = new JFrame("View Sample");
+		frame.setBounds(100, 100, 600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//HelpFrameの作成
+		helpf= new JFrame("help page");
+		helpf.setBounds(300, 300, 600, 600);
+		helpText = new JTextArea();
+
+		try{
+			file = new File("");
+			FileReader filereader = new FileReader(file);
+			BufferedReader br = new BufferedReader(filereader);
+			StringBuilder sb = new StringBuilder();
+			String text;
+			//ここできない
+			while((text = br.readLine())!=null){
+				sb.append(text);
+			}
+			br.close();
+			text = sb.toString();
+			helpText.setText(text);
+		}catch(FileNotFoundException a){
+  			System.out.println(a);
+		}catch(IOException a){
+			System.out.println(a);
+		}
+
+
+		//labelの作成
+		save    = new JLabel("保存先");
+		URL     = new JLabel[10];
+		subject = new JLabel[10];
+		method  = new JLabel[10];
+		for(int i=0;i<10;i++){
+			URL[i]     = new JLabel("URL");
+			subject[i] = new JLabel("教科名");
+			method[i]  = new JLabel("方式");
+		}
+
+		//TextFieldの作成
+		saveText = new JTextField("",20);
+		URLText  = new JTextField[10];
+		subText  = new JTextField[10];
+		for(int i=0;i<10;i++){
+			URLText[i] = new JTextField("",30);
+			subText[i] = new JTextField("",30);
+		}
+
+		//RadioButtonの作成
+		drive = new JRadioButton[10];
+		other = new JRadioButton[10];
+		for(int i=0;i<10;i++){
+			drive[i] = new JRadioButton("Google Drive");
+			other[i] = new JRadioButton("Other");
+		}
+
+		//driveとotherを含むButtonGroupを作成
+		group = new ButtonGroup[10];
+		for(int i=0;i<10;i++){
+			group[i] = new ButtonGroup();
+			group[i].add(drive[i]);
+			group[i].add(other[i]);
+		}
+
+		//buttonを作成する
+		help   = new JButton("ヘルプ");
+		apply  = new JButton("適用");
+		start  = new JButton("スタート");
+
+		//アクションを設定
+		help.addActionListener(this);
+		apply.addActionListener(this);
+		start.addActionListener(this);
+
+		//各パーツをパネル化する
+		savePanel = new JPanel();
+		savePanel.add(save);
+		savePanel.add(saveText);
+		savePanel.add(apply);
+		savePanel.add(start);
+		savePanel.add(help);
+		URLPanel  = new JPanel[10];
+		subPanel  = new JPanel[10];
+		metPanel  = new JPanel[10];
+
+		for(int i=0;i<10;i++){
+			//URLのLabelとTextFieldを結合
+			URLPanel[i] = new JPanel();
+			URLPanel[i].setLayout(new FlowLayout());
+			URLPanel[i].add(URL[i]);
+			URLPanel[i].add(URLText[i]);
+			//subjectのLabelとTextFieldを結合
+			subPanel[i] = new JPanel();
+			subPanel[i].setLayout(new FlowLayout());
+			subPanel[i].add(subject[i]);
+			subPanel[i].add(subText[i]);
+			//methodのLabelとButtonFieldを結合
+			metPanel[i] = new JPanel();
+			metPanel[i].setLayout(new FlowLayout());
+			metPanel[i].add(method[i]);
+			metPanel[i].add(drive[i]);
+			metPanel[i].add(other[i]);
+		}
+
+		//Tabを作成
+			tab = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
+
+		//MainPanel[i]を作成
+		MainPanel = new JPanel[10];
+		for(int i=0;i<10;i++){
+			MainPanel[i] = new JPanel();
+			MainPanel[i].setLayout(new BoxLayout(MainPanel[i],BoxLayout.Y_AXIS));
+			//MainPanel[i]にパーツを配置
+			MainPanel[i].add(URLPanel[i]);
+			MainPanel[i].add(subPanel[i]);
+			MainPanel[i].add(metPanel[i]);
+		}
+
+		//TabにMainPanelをくっつける
+		for(int i=0;i<10;i++){
+			tab.addTab(null/*"教科"+ (i+1)*/,MainPanel[i]);
+		}
+
+		//Frameに配置
+		frame.setLayout(new BorderLayout());
+		//Tabを配置
+		frame.add(tab,BorderLayout.CENTER);
+		//SavePanelを配置
+		frame.add(savePanel,BorderLayout.SOUTH);
+
+		//HelpPageの作成
+		helpf.add(helpText,BorderLayout.CENTER);
+		//可視性を与える
 		frame.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == button[1]) {
-			String[] ur, su, ch;
-			String sa;
-			int ta, count = 0;
+	public void actionPerformed(ActionEvent e){
+		String sa; //saveText
+		String[] ur,su,ch; //URLText,subText,checkbox
+		int ta; //tab
 
-			sa = save.getText();
-			ta = tab.getTabCount();
+		ta = 10;
+		ur = new String[10];
+		su = new String[10];
+		ch = new String[10];
 
-			ur = new String[10];
-			su = new String[10];
-			ch = new String[10];
-
-			for(int i = 0; i < 10; i++) {
-				if(tabUsed[i] != -1) {
-					tab.setTitleAt(i, text[i + 10].getText());
-
-					if(tabUsed[i] == count) {
-						ur[count] = text[i].getText();
-						su[count] = text[i + 10].getText();
-
-						if(radio[i].isSelected()) {
-							ch[count] = radio[i].getText();
-						} else {
-							ch[count] = radio[i + 10].getText();
-						}
-
-						count++;
-					}
+		//適用ボタンが押された場合
+		if(e.getSource() == apply){
+			//保存先を格納
+			sa = saveText.getText();
+			//各タブのURLと教科名と方式を格納
+			for(int i=0;i<10;i++){
+				ur[i] = URLText[i].getText();
+				su[i] = subText[i].getText();
+				//タブのタイトルを教科名に変更
+				tab.setTitleAt(i,su[i]);
+				//押されているボタンによって保存する文字列を決定
+				if(drive[i].isSelected()){
+					ch[i] = drive[i].getText();
+				} else{
+					ch[i] = other[i].getText();
 				}
 			}
-
+			//ユーザが入力した値をコントローラーに渡す
 			controller.addSave(ur, su, ch, sa, ta);
 		}
 
-		if(e.getSource() == button[2] && tab.getSelectedIndex() != -1) {
-			for(int i = 0; i < 10; i++) {
-				if(tabUsed[i] == tab.getSelectedIndex()) {
-					tabUsed[i] = -1;
-
-					for(int j = 0; j < 10; j++) {
-						if(tabUsed[j] >= tab.getSelectedIndex()) {
-							tabUsed[j] = tabUsed[j] - 1;
-						}
-					}
-
-					tab.remove(i);
-					break;
-				}
-			}
+		//ヘルプボタンが押された場合
+		if(e.getSource() == help){
+			helpf.setVisible(true);
 		}
 
-		if(e.getSource() == button[3]) {
+		//スタートボタンが押された場合
+		if(e.getSource() == start){
 			controller.addGet();
-		}
-
-		if(e.getSource() == button[4] && tab.getTabCount() < 11) {
-			for(int i = 0; i < 10; i++) {
-				if(tabUsed[i] == -1) {
-					tab.addTab("tab" + i, panel[i + 30]);
-					tabUsed[i] = tab.getTabCount() - 1;
-					break;
-				}
-			}
 		}
 	}
 

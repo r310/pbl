@@ -4,7 +4,7 @@ public class Data {
 	protected String save;
 	protected String[] chbox;
 	protected int tab;
-	protected static String path = "C:\\Users\\Ryutaro\\Desktop\\";
+	protected static String path = "C:/Users/Ryutaro/Desktop/新しいフォルダー/pbl - コピー/";
 
 	public String getPath() {
 		return path;
