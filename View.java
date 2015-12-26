@@ -23,8 +23,10 @@ class View implements ActionListener{
 	private JTextArea helpText;
 	private File file;
 	private FileReader filereader;
-	private int tabcount;
+	private int[] taborder;
 	private JTextArea result, filename;
+	private JPanel color;
+	private JScrollPane scroll;
 
 	public void setSaveText(String save) {
 		saveText.setText(save);
@@ -55,14 +57,10 @@ class View implements ActionListener{
 		}
 	}
 
-	public void setTabTitle() {
-		for(int i = 0; i < 10; i++) {
+	public void setTabTitle(int ta) {
+		for(int i = 0; i < ta; i++) {
 			tab.setTitleAt(i, subText[i].getText());
 		}
-
-		//	for(int i = 0; i < 10; i++) {
-		//		tab.setTitleAt(i,subText[i].getText());
-		//	}
 	}
 
 	public View(){
@@ -202,8 +200,12 @@ class View implements ActionListener{
 	//		tab.addTab(null/*"教科"+ (i+1)*/,MainPanel[i]);
 	//	}
 
+		taborder = new int[10];
+		for(int i = 0; i < 10; i++) {
+			taborder[i] = -1;
+		}
 		tab.addTab("新しいタブ",MainPanel[0]);
-		tabcount = 1;
+		taborder[0] = 0;
 
 		//Frameに配置
 //		frame.setLayout(new BorderLayout());
@@ -215,11 +217,11 @@ class View implements ActionListener{
 		//HelpPageの作成
 //		helpf.add(helpText,BorderLayout.CENTER);
 
-		JPanel color = new JPanel();
+		color = new JPanel();
 		color.setBackground(new Color(238, 238, 238));
 
 		result = new JTextArea();
-		JScrollPane scroll = new JScrollPane(result);
+		scroll = new JScrollPane(result);
 
 		cont.add(method[0]);
 		cont.add(delete);
@@ -264,17 +266,46 @@ class View implements ActionListener{
 
 		if(e.getSource() == delete) {
 			int index = tab.getSelectedIndex();
-
 			if(index != -1) {
-				tab.remove(index);
+
+				for(int i = 0; i < 10; i++) {
+					if(taborder[i] == index) {
+						taborder[i] = -1;
+						tab.remove(i);
+						break;
+					}
+				}
+			}
+
+			for(int i = 0; i < 10; i++) {
+				if(taborder[i]  > index) {
+					taborder[i]--;
+				}
+			}
+
+			System.out.println("order");
+			for(int i = 0; i < 10; i++) {
+				System.out.println(i + "  :  " + taborder[i]);
 			}
 		}
 
 		if(e.getSource() == plus) {
-			if(tabcount < 10) {
-				tab.addTab("新しいタブ",MainPanel[tabcount++]);
-			} else {
-				result.append("これ以上タブは増やせません\n");
+			int tabcount = tab.getTabCount();
+			for(int i = 0; i < 10; i++) {
+				if(taborder[i] == -1) {
+					tab.addTab("新しいタブ(" + i + ")",MainPanel[i]);
+					taborder[i] = tabcount;
+					break;
+				}
+
+				if(i == 9) {
+					result.append("これ以上タブは増やせません\n");
+				}
+			}
+
+			System.out.println("order");
+			for(int i = 0; i < 10; i++) {
+				System.out.println(i + "  :  " + taborder[i]);
 			}
 		}
 
@@ -282,8 +313,9 @@ class View implements ActionListener{
 		if(e.getSource() == apply){
 			//保存先を格納
 			sa = saveText.getText();
+			ta = tab.getTabCount();
 			//各タブのURLと教科名と方式を格納
-			for(int i=0;i<10;i++){
+			for(int i=0;i<ta;i++){
 				ur[i] = URLText[i].getText();
 				su[i] = subText[i].getText();
 				//タブのタイトルを教科名に変更

@@ -31,7 +31,7 @@ public class Controller {
 		}
 
 		view.setSaveText(sa);
-		view.setTabTitle();
+	//	view.setTabTitle(ta);
 	}
 
 	//savedataに値を渡すメソッド
