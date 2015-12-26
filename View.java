@@ -16,7 +16,7 @@ class View implements ActionListener{
 	private	JPanel[] URLPanel,subPanel,metPanel,MainPanel;
 	private JTextField saveText;
 	private JTextField[] URLText,subText;
-	private JButton help,apply,start,plus;
+	private JButton help,apply,start,plus,delete;
 	private JTabbedPane tab;
 	private JTextArea helpText;
 	private File file;
@@ -93,23 +93,23 @@ class View implements ActionListener{
 
 
 		//labelの作成
-		save    = new JLabel("保存先");
+		save    = new JLabel("保存先                 ");
 		URL     = new JLabel[10];
 		subject = new JLabel[10];
 		method  = new JLabel[10];
 		for(int i=0;i<10;i++){
-			URL[i]     = new JLabel("URL");
-			subject[i] = new JLabel("教科名");
+			URL[i]     = new JLabel("                     URL                      ");
+			subject[i] = new JLabel("                     教科名                 ");
 			method[i]  = new JLabel("方式");
 		}
 
 		//TextFieldの作成
-		saveText = new JTextField("",20);
+		saveText = new JTextField("",28);
 		URLText  = new JTextField[10];
 		subText  = new JTextField[10];
 		for(int i=0;i<10;i++){
-			URLText[i] = new JTextField("",30);
-			subText[i] = new JTextField("",30);
+			URLText[i] = new JTextField("",28);
+			subText[i] = new JTextField("",28);
 		}
 
 		//RadioButtonの作成
@@ -133,6 +133,7 @@ class View implements ActionListener{
 		apply  = new JButton("適用");
 		start  = new JButton("スタート");
 		plus = new JButton("+");
+		delete = new JButton("タブを削除");
 		plus.setFont(new Font("メイリオ", Font.PLAIN, 10));
 
 		//アクションを設定
@@ -140,6 +141,7 @@ class View implements ActionListener{
 		apply.addActionListener(this);
 		start.addActionListener(this);
 		plus.addActionListener(this);
+		delete.addActionListener(this);
 
 		//各パーツをパネル化する
 		savePanel = new JPanel();
@@ -167,7 +169,7 @@ class View implements ActionListener{
 			//methodのLabelとButtonFieldを結合
 			metPanel[i] = new JPanel();
 			metPanel[i].setLayout(new FlowLayout());
-			metPanel[i].add(method[i]);
+	//		metPanel[i].add(method[i]);
 			metPanel[i].add(drive[i]);
 			metPanel[i].add(other[i]);
 		}
@@ -185,7 +187,6 @@ class View implements ActionListener{
 			MainPanel[i].add(subPanel[i]);
 			MainPanel[i].add(metPanel[i]);
 		}
-
 
 		//TabにMainPanelをくっつける
 	//	for(int i=0;i<10;i++){
@@ -208,6 +209,9 @@ class View implements ActionListener{
 		JPanel color = new JPanel();
 		color.setBackground(new Color(238, 238, 238));
 
+
+		cont.add(method[0]);
+		cont.add(delete);
 		cont.add(help);
 		cont.add(plus);
 		cont.add(color);
@@ -215,13 +219,16 @@ class View implements ActionListener{
 		cont.add(start);
 		cont.add(apply);
 		cont.add(savePanel);
+
+		method[0].setBounds(68, 128, 75, 22);
+		delete.setBounds(475, 160, 120, 20);
 		help.setBounds(520, 0, 75, 22);
 		plus.setBounds(480, 0, 45, 22);
-		tab.setBounds(0, 0, 480, 200);
-		color.setBounds(475, 22, 500, 200);
-		apply.setBounds(480, 225, 75, 20);
-		savePanel.setBounds(30, 220, 500, 30);
-
+		tab.setBounds(0, 0, 480, 180);
+		color.setBounds(475, 22, 500, 170);
+		start.setBounds(485, 230, 100, 20);
+		apply.setBounds(485, 200, 100, 20);
+		savePanel.setBounds(58, 195, 430, 30);
 		tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		//中央に表示
@@ -241,8 +248,16 @@ class View implements ActionListener{
 		su = new String[10];
 		ch = new String[10];
 
+		if(e.getSource() == delete) {
+			int index = tab.getSelectedIndex();
+
+			if(index != -1) {
+				tab.remove(index);
+			}
+		}
+
 		if(e.getSource() == plus) {
-			tab.addTab(null,MainPanel[tabcount++]);
+			tab.addTab("新しいタブ",MainPanel[tabcount++]);
 		}
 
 		//適用ボタンが押された場合
