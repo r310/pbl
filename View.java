@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import javax.swing.border.*;
+import javax.swing.text.*;
 
 class View implements ActionListener{
 //GUIの作成
@@ -22,6 +24,7 @@ class View implements ActionListener{
 	private File file;
 	private FileReader filereader;
 	private int tabcount;
+	private JTextArea result, filename;
 
 	public void setSaveText(String save) {
 		saveText.setText(save);
@@ -37,12 +40,18 @@ class View implements ActionListener{
 
 	public void setRadioButton(String chb, int i) {
 		System.out.println(chb);
-		if(chb == "Google Drive") {
-			drive[i].setSelected(true);
-		}
 
-		else if(chb == "Other") {
-			other[i].setSelected(true);
+		switch(chb) {
+			case "Google Drive":
+				drive[i].setSelected(true);
+				break;
+
+			case "Other":
+				other[i].setSelected(true);
+				break;
+
+			default:
+				break;
 		}
 	}
 
@@ -59,7 +68,7 @@ class View implements ActionListener{
 	public View(){
 		//MainFrameの作成
 		frame = new JFrame("PBL");
-		frame.setSize(600, 300);
+		frame.setSize(600, 400);
 //		frame.setBounds(100, 100, 600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -193,7 +202,7 @@ class View implements ActionListener{
 	//		tab.addTab(null/*"教科"+ (i+1)*/,MainPanel[i]);
 	//	}
 
-		tab.addTab(null,MainPanel[0]);
+		tab.addTab("新しいタブ",MainPanel[0]);
 		tabcount = 1;
 
 		//Frameに配置
@@ -209,6 +218,8 @@ class View implements ActionListener{
 		JPanel color = new JPanel();
 		color.setBackground(new Color(238, 238, 238));
 
+		result = new JTextArea();
+		JScrollPane scroll = new JScrollPane(result);
 
 		cont.add(method[0]);
 		cont.add(delete);
@@ -219,6 +230,7 @@ class View implements ActionListener{
 		cont.add(start);
 		cont.add(apply);
 		cont.add(savePanel);
+		cont.add(scroll);
 
 		method[0].setBounds(68, 128, 75, 22);
 		delete.setBounds(475, 160, 120, 20);
@@ -229,10 +241,12 @@ class View implements ActionListener{
 		start.setBounds(485, 230, 100, 20);
 		apply.setBounds(485, 200, 100, 20);
 		savePanel.setBounds(58, 195, 430, 30);
+		scroll.setBounds(22, 275, 550, 80);
 		tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
+
 		//中央に表示
-    frame.setLocationRelativeTo(null);
+    	frame.setLocationRelativeTo(null);
 		//可視性を与える
 		frame.setVisible(true);
 		frame.setResizable(false);
@@ -257,7 +271,11 @@ class View implements ActionListener{
 		}
 
 		if(e.getSource() == plus) {
-			tab.addTab("新しいタブ",MainPanel[tabcount++]);
+			if(tabcount < 10) {
+				tab.addTab("新しいタブ",MainPanel[tabcount++]);
+			} else {
+				result.append("これ以上タブは増やせません\n");
+			}
 		}
 
 		//適用ボタンが押された場合
