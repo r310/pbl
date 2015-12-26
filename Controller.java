@@ -157,6 +157,7 @@ public class Controller {
 					while((line = br.readLine()) != null) {
 						getdata.download(line, su[i]);	//読み込んだurl先のファイルを保存するメソッドを呼び出す
 						getdata.saveurlFile(line, su[i]);	//保存したファイルのurlを書き込むメソッドを呼び出す
+					  view.addResult(getdata.getFileName(line));
 					}
 
 					br.close();

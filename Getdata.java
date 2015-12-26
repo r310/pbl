@@ -116,6 +116,7 @@ public class Getdata extends Data{
 
 						if(match3.find()) {
 							System.out.println(match3.group());
+							map.put(match.group(), match3.group());
 						}
 /*
 						System.out.println("regex4");
@@ -144,6 +145,7 @@ public class Getdata extends Data{
 
 						if(match5.find()) {
 							System.out.println(match5.group());
+							map.put(match.group(), match5.group());
 						}
 					}
 
@@ -198,7 +200,7 @@ public class Getdata extends Data{
 			URLConnection conn = ur.openConnection();	//指定したurlに接続
 			InputStream in = conn.getInputStream();	//ストリームを生成
 			String filename = map.get(fileurl);		//fileurlに対応するマップを代入
-			File fi = new File(this.save + dirsub + "/" + filename);	//保存先を指定
+			File fi = new File(this.save + dirsub + "/test");	//保存先を指定
 			FileOutputStream out = new FileOutputStream(fi, false);
 
 			int b;
@@ -208,6 +210,10 @@ public class Getdata extends Data{
 
 			out.close();
 			in.close();
+
+			String na = new String(filename.getBytes("UTF-8"), "UTF-8");
+			File fi2 = new File(this.save + dirsub + "/" + na);
+			if(fi.renameTo(fi2)) {}
 
 		} catch(IOException e) {
 			System.out.println(e);	//例外が発生した場合に表示
