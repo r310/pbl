@@ -41,8 +41,6 @@ class View implements ActionListener{
 	}
 
 	public void setRadioButton(String chb, int i) {
-		System.out.println(chb);
-
 		switch(chb) {
 			case "Google Drive":
 				drive[i].setSelected(true);
@@ -57,9 +55,10 @@ class View implements ActionListener{
 		}
 	}
 
-	public void setTabTitle(int ta) {
+	public void setDisp(int ta) {
 		for(int i = 0; i < ta; i++) {
-			tab.setTitleAt(i, subText[i].getText());
+			tab.addTab(subText[i].getText(), MainPanel[i]);
+			taborder[i] = i;
 		}
 	}
 
@@ -93,7 +92,7 @@ class View implements ActionListener{
 			text = sb.toString();
 			helpText.setText(text);
 		}catch(FileNotFoundException a){
-  			System.out.println(a);
+  		//	System.out.println(a);
 		}catch(IOException a){
 			System.out.println(a);
 		}
@@ -204,8 +203,8 @@ class View implements ActionListener{
 		for(int i = 0; i < 10; i++) {
 			taborder[i] = -1;
 		}
-		tab.addTab("新しいタブ",MainPanel[0]);
-		taborder[0] = 0;
+	//	tab.addTab("新しいタブ",MainPanel[0]);
+	//	taborder[0] = 0;
 
 		//Frameに配置
 //		frame.setLayout(new BorderLayout());

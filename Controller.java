@@ -7,22 +7,32 @@ public class Controller {
 
 	//viewに値を渡すメソッド
 	public void initialInfo() {
-		getdata.readkeyFile();	//readkeyFileに書かれている情報を読み込む
-
+		File re = new File(getdata.getPath() + "file/keyFile.txt");
 		String[] ur, su, ch;
 		String sa;
 		int ta;
-
-		ta = getdata.getTab();		//読み込んだタブの数を代入
-		sa = getdata.getSave();		//読み込んだ保存先を代入
 
 		ur = new String[10];
 		su = new String[10];
 		ch = new String[10];
 
-		ur = getdata.getURL();		//読み込んだURLを代入
-		su = getdata.getSub();		//読み込んだ教科名を代入
-		ch = getdata.getChbox();	//読み込んだ方式を代入
+		if(re.exists()) {
+			getdata.readkeyFile();
+
+			ta = getdata.getTab();
+			sa = getdata.getSave();
+
+			ur = getdata.getURL();
+			su = getdata.getSub();
+			ch = getdata.getChbox();
+
+		} else {
+			ta = 1;
+			sa = "";
+			ur[0] = "";
+			su[0] = "";
+			ch[0] = "";
+		}
 
 		for(int i = 0; i < ta; i++) {
 			view.setURLText(ur[i], i);
@@ -30,8 +40,8 @@ public class Controller {
 			view.setRadioButton(ch[i], i);
 		}
 
+		view.setDisp(ta);
 		view.setSaveText(sa);
-	//	view.setTabTitle(ta);
 	}
 
 	//savedataに値を渡すメソッド
