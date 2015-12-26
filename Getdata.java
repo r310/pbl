@@ -12,6 +12,10 @@ public class Getdata extends Data{
 		chbox = new String[10];
 	}
 
+	public String getFileName(String url) {
+		return map.get(url);
+	}
+
 	//マップからすべて削除するメソッド
 	public void clearMap() {
 		map.clear();
@@ -81,7 +85,7 @@ public class Getdata extends Data{
 
 		try {
 			String htm = getSourceText(new URL(url));	//url先のhtmlの情報を取得し、代入
-			System.out.println(htm);
+		//	System.out.println(htm);
 			Matcher match = pa.matcher(htm);			//マッチャを作成
 
 			try {
@@ -101,7 +105,7 @@ public class Getdata extends Data{
 					Pattern pa2 = Pattern.compile(regex2);
 					Matcher match2 = pa2.matcher(htm);
 
-					System.out.println(key2);
+					System.out.println("[" + key2 + "]");
 
 					while(match2.find()) {
 					//	System.out.println(match2.group());
@@ -113,14 +117,33 @@ public class Getdata extends Data{
 						if(match3.find()) {
 							System.out.println(match3.group());
 						}
-
+/*
 						System.out.println("regex4");
-						String regex4 = "((.java)|(.pdf))\\p{Punct}{3}(https://lh)\\d.(googleusercontent.com/).{70}\\p{Punct}(,,,,)\\p{Punct}(0B-wjPD8Rvpuc)" + key3 + "\\p{Punct}";
+						String regex4 = "((.java)|(.pdf))\\p{Punct}{3}(https://lh)\\d.(googleusercontent.com/).{70}\\p{Punct}(,,,,)\\p{Punct}(0B-wjPD8Rvpuc)";
 						Pattern pa4 = Pattern.compile(regex4);
 						Matcher match4 = pa4.matcher(htm);
 
 						while(match4.find()) {
 							System.out.println(match4.group());
+						}
+						*/
+					}
+
+					String regex4 = "(,,)\\p{Punct}.{1,15}((.java)|(.pdf))\\p{Punct}{3}(https://lh)\\d.(googleusercontent.com/).{70}\\p{Punct}(,,,,)\\p{Punct}(0B-wjPD8Rvpuc)" + key2;
+					Pattern pa4 = Pattern.compile(regex4);
+					Matcher match4 = pa4.matcher(htm);
+
+					while(match4.find()) {
+				//		System.out.println(match4.group());
+						String key4 = match4.group();
+						String key5 = key4.substring(3, 30);
+
+						String regex5 = ".{1,15}((.java)|(.pdf))";
+						Pattern pa5 = Pattern.compile(regex5);
+						Matcher match5 = pa5.matcher(key5);
+
+						if(match5.find()) {
+							System.out.println(match5.group());
 						}
 					}
 
@@ -207,14 +230,16 @@ public class Getdata extends Data{
 
 	//url先のhtmlの情報を取得するメソッド
 	public String getSourceText(URL url) throws IOException {
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("po.cc.ibaraki-ct.ac.jp", 3128));
-		HttpURLConnection conn = (HttpURLConnection)url.openConnection(proxy);	//url先に接続
+//		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("po.cc.ibaraki-ct.ac.jp", 3128));  (プロキシ)
+//		HttpURLConnection conn = (HttpURLConnection)url.openConnection(proxy);	//url先に接続　　(プロキシ)
+		InputStream in = url.openStream();
 		StringBuilder sb = new StringBuilder();			//可変長の文字列を宣言
 
 		try {
-			BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()));		//一行ずつ読み込むストリーム
-
+//			BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()));		//一行ずつ読み込むストリーム　　)プｒキシ)
+			BufferedReader bf = new BufferedReader(new InputStreamReader(in));
 			String source;
+
 			//最後まで読み込む
 			while((source = bf.readLine()) != null) {
 				sb.append(source);	//読み込んだ文字列を追加

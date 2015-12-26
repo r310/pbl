@@ -322,7 +322,7 @@ class View implements ActionListener{
 				//押されているボタンによって保存する文字列を決定
 				if(drive[i].isSelected()){
 					ch[i] = drive[i].getText();
-				} else{
+				} else {
 					ch[i] = other[i].getText();
 				}
 			}
@@ -339,6 +339,10 @@ class View implements ActionListener{
 		if(e.getSource() == start){
 			controller.addGet();
 		}
+	}
+
+	public void addResult(String st) {
+		result.append(st + "\n");
 	}
 
 	public void setController(Controller controller) {

@@ -102,8 +102,7 @@ public class Controller {
 					getdata.setURL1(ur[i]);
 					break;
 
-				case "Google Drive" :
-					System.out.println("setURL2");
+				case "Google Drive":
 					getdata.setURL2(ur[i]);
 					break;
 
@@ -138,6 +137,7 @@ public class Controller {
 						if(getdata.comparison(line, fileurl)) {	//既に保存されたurlと比較
 							getdata.download(line, su[i]);	//まだ保存されていない場合、downloadを呼び出す
 							getdata.saveurlFile(line, su[i]);			//まだ保存されていない場合、saveurlFileを呼び出す
+							view.addResult(getdata.getFileName(line));
 						}
 					}
 
